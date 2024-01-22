@@ -29,12 +29,14 @@ def download_and_save_image(url, issue_number):
     try:
         response = requests.get(url)
         if response.status_code == 200:
-            mime_type = response.headers['Content-Type']
-            extension = mimetypes.guess_extension(mime_type)
-            image_name = Path(f"{url}{extension}").name
+            image_name = Path(f"{url}").name
             image_folder = image_root / f'issue-{issue_number}'
             image_folder.mkdir(parents=True, exist_ok=True)
             path = image_folder / image_name
+            if !path.suffix:
+                mime_type = response.headers['Content-Type']
+                extension = mimetypes.guess_extension(mime_type)
+                path = path.with_suffix(extension)
             path.write_bytes(response.content)
             # return the file path as a string for our markdown file
             return str(path)
