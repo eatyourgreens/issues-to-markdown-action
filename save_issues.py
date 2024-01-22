@@ -1,6 +1,12 @@
 import os
 import re
 import requests
+from pathlib import Path, PurePath
+
+# create the default image directory, if it doesn't exist
+image_root = Path('images').mkdir(parents=True, exist_ok=True)
+# edit this if you want to save the markdown files to a subdirectory
+markdown_root = Path('./').mkdir(parents=True, exist_ok=True)
 
 def get_issues(repo, token, label):
     url = f"https://api.github.com/repos/{repo}/issues"
@@ -21,11 +27,10 @@ def download_and_save_image(url, issue_number):
     try:
         response = requests.get(url)
         if response.status_code == 200:
-            image_name = url.split("/")[-1]
-            image_folder = f'images/issue-{issue_number}'
-            if not os.path.exists(image_folder):
-                os.makedirs(image_folder)
-            path = os.path.join(image_folder, image_name)
+            image_name = PurePath(url).name
+            image_folder = image_root / f'issue-{issue_number}'
+            image_folder.mkdir(parents=True, exist_ok=True)
+            path = image_folder / image_name
             with open(path, 'wb') as file:
                 file.write(response.content)
             return path
@@ -39,13 +44,15 @@ def download_and_save_image(url, issue_number):
 def save_issue(issue):
     try:
         title = issue.get('title', 'Untitled').replace(' ', '_')
-        filename = f"{issue.get('number', 'Unknown')}_{title}.md"
-        with open(filename, 'w') as file:
-            file.write(f"# {issue.get('title', 'Untitled')}\n\n")
+        issue_number = issue.get('number', 'Unknown')
+        issue_title = issue.get('title', 'Untitled')
+        md_file = markdown_root / f"{issue_number}_{title}.md"
+        with open(md_file, 'w') as file:
+            file.write(f"# {issue_title}\n\n")
             body = issue.get('body', '')
             image_urls = extract_image_urls(body)
             for url in image_urls:
-                image_path = download_and_save_image(url, issue['number'])
+                image_path = download_and_save_image(url, issue_number)
                 if image_path:
                     body = body.replace(url, image_path)
             file.write(body)
