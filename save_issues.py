@@ -1,3 +1,4 @@
+import mimetypes
 import os
 import re
 import requests
@@ -28,7 +29,9 @@ def download_and_save_image(url, issue_number):
     try:
         response = requests.get(url)
         if response.status_code == 200:
-            image_name = Path(url).name
+            mime_type = response.headers['Content-Type']
+            extension = mimetypes.guess_extension(mime_type)
+            image_name = Path(f"{url}{extension}").name
             image_folder = image_root / f'issue-{issue_number}'
             image_folder.mkdir(parents=True, exist_ok=True)
             path = image_folder / image_name
