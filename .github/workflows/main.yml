@@ -47,14 +47,14 @@ jobs:
     - name: Push changes
       uses: ad-m/github-push-action@master
       with:
-        github_token: ${{ secrets.issuetomd1 }}
+        github_token: ${{ secrets.GITHUB_TOKEN }}
         branch: update-markdown-${{ github.run_id }}
 
     # Create a Pull Request from the new branch to the main branch
     - name: Create Pull Request
       uses: repo-sync/pull-request@v2
       with:
-        github_token: ${{ secrets.issuetomd1 }}
+        github_token: ${{ secrets.GITHUB_TOKEN }}
         pr_title: "Update Markdown files for issues labeled as done"
         pr_body: "This PR updates the Markdown files for issues labeled as done."
         source_branch: update-markdown-${{ github.run_id }}
