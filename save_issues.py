@@ -60,7 +60,7 @@ def save_issue(issue):
         print(f"Error processing issue: {e}")
 
 def main():
-    repo = 'stevefaulkner/issues-to-markdown-action'  # Replace with your username/repo
+    repo = 'eatyourgreens/issues-to-markdown-action'  # Replace with your username/repo
     token = os.getenv('GITHUB_TOKEN')
     try:
         issues = get_issues(repo, token, 'done')
