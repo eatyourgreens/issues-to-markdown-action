@@ -23,7 +23,7 @@ jobs:
 
     - name: Save Issues
       env:
-        GITHUB_TOKEN: ${{ secrets.issuetomd1 }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         python save_issues.py
 
