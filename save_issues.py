@@ -28,6 +28,8 @@ def download_and_save_image(url, issue_number):
     try:
         response = requests.get(url)
         if response.status_code == 200:
+            mime_type = response.headers['Content-Type']
+            print(url, mime_type)
             image_name = Path(url).name
             image_folder = image_root / f'issue-{issue_number}'
             image_folder.mkdir(parents=True, exist_ok=True)
@@ -60,7 +62,7 @@ def save_issue(issue):
         print(f"Error processing issue: {e}")
 
 def main():
-    repo = 'eatyourgreens/issues-to-markdown-action'  # Replace with your username/repo
+    repo = 'stevefaulkner/issues-to-markdown-action'  # Replace with your username/repo
     token = os.getenv('GITHUB_TOKEN')
     try:
         issues = get_issues(repo, token, 'done')
