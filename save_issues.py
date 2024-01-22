@@ -33,7 +33,7 @@ def download_and_save_image(url, issue_number):
             image_folder = image_root / f'issue-{issue_number}'
             image_folder.mkdir(parents=True, exist_ok=True)
             path = image_folder / image_name
-            if !path.suffix:
+            if not path.suffix:
                 mime_type = response.headers['Content-Type']
                 extension = mimetypes.guess_extension(mime_type)
                 path = path.with_suffix(extension)
