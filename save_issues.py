@@ -74,7 +74,7 @@ def save_issue(issue):
         print(f"Error processing issue: {e}")
 
 def main():
-    repo = 'stevefaulkner/issues-to-markdown-action'  # Replace with your username/repo
+    repo = 'eatyourgreens/issues-to-markdown-action'  # Replace with your username/repo
     try:
         issues = get_issues(repo, label='done')
         for issue in issues:
