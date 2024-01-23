@@ -7,8 +7,9 @@ from pathlib import Path
 # create the default image directory, if it doesn't exist
 image_root = Path('images')
 image_root.mkdir(parents=True, exist_ok=True)
-# change this if you want to save the markdown files to a subdirectory
-markdown_root = Path.cwd()
+# create the default issues directory, if it doesn't exist.
+markdown_root = Path('issues')
+image_root.mkdir(parents=True, exist_ok=True)
 
 def get_issues(repo, token, label):
     url = f"https://api.github.com/repos/{repo}/issues"
